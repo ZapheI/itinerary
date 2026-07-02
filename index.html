@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UAE Itinerary — 16–30 August</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0a0f1a;
+    --bg-grad-a: #0a0f1a;
+    --bg-grad-b: #0e1626;
+    --card: #121c2e;
+    --card-alt: #16223a;
+    --gold: #d4af37;
+    --gold-soft: #e9cd7a;
+    --teal: #33bfae;
+    --text: #f3eee0;
+    --text-dim: #96a2ba;
+    --text-faint: #5d6a86;
+    --line: rgba(212,175,55,0.22);
+    --free: #6d7a99;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(ellipse 900px 500px at 15% -5%, rgba(212,175,55,0.08), transparent 60%),
+      radial-gradient(ellipse 700px 500px at 90% 10%, rgba(51,191,174,0.06), transparent 55%),
+      linear-gradient(180deg, var(--bg-grad-a), var(--bg-grad-b) 40%, var(--bg-grad-a));
+    color:var(--text);
+    font-family:'Manrope', sans-serif;
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+    padding-bottom:60px;
+  }
+  a{color:inherit;}
+
+  /* ---------- Header ---------- */
+  header{
+    padding:38px 20px 22px;
+    text-align:center;
+    position:relative;
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    letter-spacing:0.35em;
+    font-size:11px;
+    color:var(--gold-soft);
+    text-transform:uppercase;
+    margin-bottom:10px;
+  }
+  h1{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:clamp(28px,8vw,42px);
+    margin:0 0 8px;
+    letter-spacing:-0.01em;
+  }
+  .subtitle{
+    color:var(--text-dim);
+    font-size:14px;
+    font-weight:500;
+  }
+  .subtitle .divider-dot{color:var(--gold); margin:0 8px;}
+
+  /* ---------- Sticky day nav ---------- */
+  nav.dayrail{
+    position:sticky;
+    top:0;
+    z-index:20;
+    background:rgba(10,15,26,0.88);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+    padding:12px 0;
+  }
+  .dayrail-scroll{
+    display:flex;
+    gap:8px;
+    overflow-x:auto;
+    padding:0 16px;
+    scrollbar-width:none;
+  }
+  .dayrail-scroll::-webkit-scrollbar{display:none;}
+  .day-chip{
+    flex:0 0 auto;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+    font-weight:500;
+    color:var(--text-dim);
+    background:var(--card);
+    border:1px solid rgba(212,175,55,0.15);
+    border-radius:20px;
+    padding:7px 13px;
+    text-decoration:none;
+    white-space:nowrap;
+    transition:all .15s ease;
+  }
+  .day-chip.free-chip{color:var(--text-faint);}
+  .day-chip:active{transform:scale(0.95);}
+  .day-chip.leg-dubai{border-color:rgba(212,175,55,0.35);}
+  .day-chip.leg-auh{border-color:rgba(51,191,174,0.35);}
+
+  /* ---------- Legend ---------- */
+  .legend{
+    display:flex;
+    justify-content:center;
+    gap:22px;
+    padding:18px 20px 4px;
+    font-size:11.5px;
+    color:var(--text-dim);
+    font-family:'IBM Plex Mono', monospace;
+    letter-spacing:0.02em;
+  }
+  .legend span{display:flex;align-items:center;gap:6px;}
+  .legend i{width:8px;height:8px;border-radius:50%;display:inline-block;}
+  .legend .dot-dubai{background:var(--gold);}
+  .legend .dot-auh{background:var(--teal);}
+
+  /* ---------- Day cards ---------- */
+  main{
+    max-width:640px;
+    margin:0 auto;
+    padding:22px 16px 0;
+    display:flex;
+    flex-direction:column;
+    gap:22px;
+  }
+  .day-card{
+    scroll-margin-top:70px;
+    background:linear-gradient(165deg, var(--card), var(--card-alt));
+    border:1px solid rgba(212,175,55,0.14);
+    border-radius:18px;
+    overflow:hidden;
+    box-shadow:0 10px 30px -12px rgba(0,0,0,0.55);
+    position:relative;
+  }
+  .day-card.leg-auh{border-color:rgba(51,191,174,0.18);}
+
+  .day-head{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    padding:20px 20px 14px;
+  }
+  .day-head .date-block{display:flex; align-items:baseline; gap:12px;}
+  .day-num{
+    font-family:'Fraunces', serif;
+    font-size:34px;
+    font-weight:600;
+    color:var(--gold-soft);
+    line-height:1;
+  }
+  .leg-auh .day-num{color:var(--teal);}
+  .date-meta{display:flex; flex-direction:column; gap:2px;}
+  .date-month{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.2em;
+    color:var(--text-dim);
+    text-transform:uppercase;
+  }
+  .date-weekday{font-size:13px; color:var(--text-faint); font-weight:600;}
+  .leg-tag{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--gold);
+    border:1px solid rgba(212,175,55,0.35);
+    border-radius:20px;
+    padding:4px 10px;
+    white-space:nowrap;
+  }
+  .leg-auh .leg-tag{color:var(--teal); border-color:rgba(51,191,174,0.4);}
+
+  /* perforation */
+  .perf{
+    position:relative;
+    height:1px;
+    margin:0 20px;
+    background-image:linear-gradient(90deg, var(--line) 50%, transparent 50%);
+    background-size:10px 1px;
+  }
+  .perf::before, .perf::after{
+    content:"";
+    position:absolute;
+    top:-7px;
+    width:14px;
+    height:14px;
+    border-radius:50%;
+    background:var(--bg);
+  }
+  .perf::before{left:-27px;}
+  .perf::after{right:-27px;}
+
+  /* timeline of activities */
+  .activities{
+    padding:16px 20px 4px;
+    position:relative;
+  }
+  .activity{
+    position:relative;
+    padding-left:22px;
+    padding-bottom:20px;
+  }
+  .activity:last-child{padding-bottom:14px;}
+  .activity::before{
+    content:"";
+    position:absolute;
+    left:4px;
+    top:5px;
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:var(--gold);
+    box-shadow:0 0 0 3px rgba(212,175,55,0.15);
+  }
+  .leg-auh .activity::before{background:var(--teal); box-shadow:0 0 0 3px rgba(51,191,174,0.15);}
+  .activity::after{
+    content:"";
+    position:absolute;
+    left:7.5px;
+    top:15px;
+    bottom:-4px;
+    width:1px;
+    background:rgba(212,175,55,0.18);
+  }
+  .leg-auh .activity::after{background:rgba(51,191,174,0.18);}
+  .activity:last-child::after{display:none;}
+
+  .activity-time{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:14px;
+    font-weight:600;
+    color:var(--gold-soft);
+    letter-spacing:0.01em;
+  }
+  .leg-auh .activity-time{color:var(--teal);}
+  .activity-name{
+    font-size:16px;
+    font-weight:700;
+    margin:3px 0 4px;
+    color:var(--text);
+  }
+  .activity-meta{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px 14px;
+    font-size:12px;
+    color:var(--text-dim);
+  }
+  .activity-meta span{display:flex; align-items:center; gap:5px;}
+  .activity-meta b{color:var(--text-faint); font-weight:600;}
+
+  /* free-time footer */
+  .free-footer{
+    margin:4px 20px 0;
+    padding:14px 0 18px;
+    border-top:1px dashed rgba(212,175,55,0.3);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+  }
+  .leg-auh .free-footer{border-top-color:rgba(51,191,174,0.3);}
+  .free-label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.2em;
+    text-transform:uppercase;
+    color:var(--free);
+  }
+  .free-range{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+    color:var(--text-dim);
+    font-weight:500;
+  }
+
+  .notes{
+    margin:0 20px 18px;
+    padding:12px 14px;
+    background:rgba(51,191,174,0.07);
+    border-left:2px solid var(--teal);
+    border-radius:6px;
+    font-size:12.5px;
+    line-height:1.55;
+    color:var(--text-dim);
+  }
+  .notes b{
+    display:block;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10px;
+    letter-spacing:0.18em;
+    color:var(--teal);
+    text-transform:uppercase;
+    margin-bottom:5px;
+  }
+
+  /* rest / free-only day */
+  .rest-day{
+    padding:34px 20px 30px;
+    text-align:center;
+  }
+  .rest-day .rest-icon{
+    font-size:22px;
+    margin-bottom:8px;
+    opacity:0.8;
+  }
+  .rest-day .rest-label{
+    font-family:'Fraunces', serif;
+    font-size:20px;
+    font-weight:500;
+    color:var(--text);
+    margin-bottom:4px;
+  }
+  .rest-day .rest-sub{
+    font-size:12.5px;
+    color:var(--text-faint);
+    font-family:'IBM Plex Mono', monospace;
+    letter-spacing:0.05em;
+  }
+
+  footer{
+    text-align:center;
+    padding:34px 20px 10px;
+    color:var(--text-faint);
+    font-size:11px;
+    font-family:'IBM Plex Mono', monospace;
+    letter-spacing:0.1em;
+  }
+
+  @media (min-width:640px){
+    .day-num{font-size:38px;}
+    .activity-name{font-size:17px;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">Trip Itinerary</div>
+  <h1>Dubai &amp; Abu Dhabi</h1>
+  <div class="subtitle">16 August<span class="divider-dot">·</span>30 August</div>
+</header>
+
+<nav class="dayrail">
+  <div class="dayrail-scroll" id="dayrail"></div>
+</nav>
+
+<div class="legend">
+  <span><i class="dot-dubai"></i>Dubai</span>
+  <span><i class="dot-auh"></i>Abu Dhabi</span>
+</div>
+
+<main id="main"></main>
+
+<footer>— safe travels —</footer>
+
+<script>
+const DATA = [
+  { day:16, weekday:"Sunday", leg:"dubai",
+    activities:[
+      { time:"9:25–9:50", name:"Arrival at airport", meta:[] },
+      { time:"~15:00", name:"Airbnb check-in", meta:[] },
+    ],
+    free:"15:00–24:00"
+  },
+  { day:17, weekday:"Monday", leg:"dubai",
+    activities:[
+      { time:"10:00–14:00", name:"Future Museum", meta:[["Open","09:30–19:30"],["Duration","4h"],["ETA","~14:00"]] },
+      { time:"15:00–18:00", name:"Green Planet", meta:[["Open","10:00–18:00"],["Duration","3h"],["ETA","~18:00"]] },
+      { time:"19:00–20:00", name:"Fountain Show", meta:[["Open","18:00–23:00"],["Duration","1h"],["ETA","~20:00"]] },
+    ],
+    free:"20:00–24:00"
+  },
+  { day:18, weekday:"Tuesday", leg:"dubai",
+    activities:[
+      { time:"17:00–21:00", name:"Dubai Mall", meta:[["Open","10:00–23:00"],["Duration","4h"],["ETA","~21:00"]] },
+      { time:"21:00–23:00", name:"Walking / Burj Khalifa", meta:[["Open","15:00–24:00"],["Duration","2h"],["ETA","~23:00"]] },
+    ],
+    free:"23:00–24:00"
+  },
+  { day:19, weekday:"Wednesday", leg:"dubai",
+    activities:[
+      { time:"14:00–16:00", name:"Souk Madinat", meta:[["Open","10:00–23:00"],["Duration","2h"],["ETA","~16:00"]] },
+      { time:"17:00–18:00", name:"Palm Jumeirah", meta:[["Open","09:00–12:00"],["Duration","1h"],["ETA","~18:00"]] },
+      { time:"18:00–19:00", name:"Ain Dubai", meta:[["Open","10:00–20:15"],["Duration","1h"],["ETA","~20:00"]] },
+    ],
+    free:"20:00–24:00"
+  },
+  { day:20, weekday:"Thursday", leg:"dubai",
+    activities:[
+      { time:"12:30–14:00", name:"Museum of Candy", meta:[["Open","11:00–21:00"],["Duration","1.5h"],["ETA","~14:00"]] },
+      { time:"15:00–18:00", name:"Wafi Mall", meta:[["Open","10:00–22:00"],["Duration","3h"],["ETA","~18:00"]] },
+      { time:"18:00–19:00", name:"Dubai Frame", meta:[["Open","09:00–21:00"],["Duration","1h"],["ETA","~19:00"]] },
+    ],
+    free:"19:00–24:00"
+  },
+  { day:21, weekday:"Friday", leg:"dubai",
+    activities:[
+      { time:"TBD", name:"Pickles & Tiac", meta:[["Duration","1.5h"],["ETA","~00:00"]] },
+      { time:"TBD", name:"TBD", meta:[["Duration","2h"],["ETA","~00:00"]] },
+      { time:"TBD", name:"TBD", meta:[["ETA","~00:00"]] },
+    ],
+    free:"20:00–24:00"
+  },
+  { day:22, weekday:"Saturday", leg:"dubai", rest:true },
+  { day:23, weekday:"Sunday", leg:"dubai",
+    activities:[
+      { time:"12:00–14:00", name:"Ibn Battuta Mall", meta:[["Open","10:00–24:00"],["Duration","2h"],["ETA","~14:00"]] },
+      { time:"14:20–16:05", name:"Bus to Abu Dhabi", meta:[["Frequency","every 20 min"],["Duration","1.75h"],["ETA","~15:30"]] },
+      { time:"17:00–18:00", name:"Airbnb check-in (Abu Dhabi)", meta:[["Open","15:00–24:00"],["ETA","~18:00"]] },
+    ],
+    free:"18:00–24:00",
+    notes:"Buses travel at 20 minute intervals."
+  },
+  { day:24, weekday:"Monday", leg:"auh",
+    activities:[
+      { time:"10:00–14:00", name:"Ferrari World", meta:[["Open","10:00–20:00"],["Duration","4h"],["ETA","~14:00"]] },
+      { time:"14:30–18:00", name:"Sea World", meta:[["Open","10:00–18:00"],["Duration","4.5h"],["ETA","~18:00"]] },
+    ],
+    free:"18:00–24:00",
+    notes:"Formula Rossa requires an advance time-slot booking — book as soon as we enter the park (first-come, first-served)."
+  },
+  { day:25, weekday:"Tuesday", leg:"auh",
+    activities:[
+      { time:"11:00–13:00", name:"Butterfly Gardens", meta:[["Open","10:00–20:00"],["Duration","2h"],["ETA","~13:00"]] },
+      { time:"14:00–18:00", name:"National Aquarium", meta:[["Open","10:00–22:00"],["Duration","4h"],["ETA","~18:00"]] },
+    ],
+    free:"18:00–24:00"
+  },
+  { day:26, weekday:"Wednesday", leg:"auh",
+    activities:[
+      { time:"10:00–11:30", name:"Zayed National Museum", meta:[["Open","10:00–20:00"],["Duration","1.5h"],["ETA","~11:30"]] },
+      { time:"12:00–16:00", name:"Natural History Museum", meta:[["Open","10:00–18:30"],["Duration","4h"],["ETA","~16:00"]] },
+      { time:"16:30–20:00", name:"Louvre Abu Dhabi", meta:[["Open","10:00–24:00"],["Duration","3.5h"],["ETA","~20:00"]] },
+    ],
+    free:"20:00–24:00",
+    notes:"Galleries and exhibitions of the Louvre close at 6:30 PM."
+  },
+  { day:27, weekday:"Thursday", leg:"auh",
+    activities:[
+      { time:"14:30–17:00", name:"Qasr Al Watan", meta:[["Open","11:00–18:15"],["Duration","2.5h"],["ETA","~17:00"]] },
+      { time:"18:00–20:00", name:"Sheikh Zayed Grand Mosque", meta:[["Open","09:00–21:00"],["Duration","2h"],["ETA","~20:00"]] },
+    ],
+    free:"20:00–24:00"
+  },
+  { day:28, weekday:"Friday", leg:"auh", rest:true },
+  { day:29, weekday:"Saturday", leg:"auh",
+    activities:[
+      { time:"10:00–11:00", name:"Airbnb check-out", meta:[["Duration","1h"],["ETA","~11:00"]] },
+      { time:"12:30–14:15", name:"Travel to Dubai", meta:[["Duration","1.75h"],["ETA","~14:15"]] },
+      { time:"15:00–16:00", name:"Airbnb check-in (Dubai)", meta:[["Duration","1h"],["ETA","~20:00"]] },
+    ],
+    free:"16:00–24:00",
+    notes:"Buses travel at 20 minute intervals."
+  },
+  { day:30, weekday:"Sunday", leg:"dubai",
+    activities:[
+      { time:"07:00–08:00", name:"Final preparations", meta:[["Duration","1h"],["ETA","~14:00"]] },
+      { time:"08:00–10:00", name:"Arrival at airport", meta:[["Duration","2h"],["ETA","~18:00"]] },
+      { time:"10:00–11:00", name:"Departure airport", meta:[["ETA","~11:00"]] },
+    ]
+  },
+];
+
+const rail = document.getElementById('dayrail');
+const main = document.getElementById('main');
+
+DATA.forEach(d => {
+  // rail chip
+  const chip = document.createElement('a');
+  chip.href = '#day' + d.day;
+  chip.className = 'day-chip leg-' + d.leg + (d.rest ? ' free-chip' : '');
+  chip.textContent = 'Aug ' + d.day;
+  rail.appendChild(chip);
+
+  // card
+  const card = document.createElement('section');
+  card.className = 'day-card leg-' + d.leg;
+  card.id = 'day' + d.day;
+
+  const head = document.createElement('div');
+  head.className = 'day-head';
+  head.innerHTML = `
+    <div class="date-block">
+      <div class="day-num">${d.day}</div>
+      <div class="date-meta">
+        <div class="date-month">August</div>
+        <div class="date-weekday">${d.weekday}</div>
+      </div>
+    </div>
+    <div class="leg-tag">${d.leg === 'auh' ? 'Abu Dhabi' : 'Dubai'}</div>
+  `;
+  card.appendChild(head);
+
+  if (d.rest) {
+    const rest = document.createElement('div');
+    rest.className = 'rest-day';
+    rest.innerHTML = `
+      <div class="rest-icon">✦</div>
+      <div class="rest-label">Open day</div>
+      <div class="rest-sub">00:00 – 24:00 · nothing planned</div>
+    `;
+    card.appendChild(rest);
+  } else {
+    const perf1 = document.createElement('div');
+    perf1.className = 'perf';
+    card.appendChild(perf1);
+
+    const acts = document.createElement('div');
+    acts.className = 'activities';
+    d.activities.forEach(a => {
+      const row = document.createElement('div');
+      row.className = 'activity';
+      const metaHtml = a.meta.map(([k,v]) => `<span><b>${k}</b>${v}</span>`).join('');
+      row.innerHTML = `
+        <div class="activity-time">${a.time}</div>
+        <div class="activity-name">${a.name}</div>
+        <div class="activity-meta">${metaHtml}</div>
+      `;
+      acts.appendChild(row);
+    });
+    card.appendChild(acts);
+
+    if (d.free) {
+      const perf2 = document.createElement('div');
+      perf2.className = 'perf';
+      card.appendChild(perf2);
+
+      const free = document.createElement('div');
+      free.className = 'free-footer';
+      free.innerHTML = `<span class="free-label">Free time</span><span class="free-range">${d.free}</span>`;
+      card.appendChild(free);
+    }
+
+    if (d.notes) {
+      const notes = document.createElement('div');
+      notes.className = 'notes';
+      notes.innerHTML = `<b>Note</b>${d.notes}`;
+      card.appendChild(notes);
+    }
+  }
+
+  main.appendChild(card);
+});
+</script>
+</body>
+</html>
